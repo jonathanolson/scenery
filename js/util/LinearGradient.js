@@ -10,9 +10,9 @@
 
 define( function( require ) {
   'use strict';
-  
+
   var scenery = require( 'SCENERY/scenery' );
-  
+
   var inherit = require( 'PHET_CORE/inherit' );
   var Vector2 = require( 'DOT/Vector2' );
   var Gradient = require( 'SCENERY/util/Gradient' );
@@ -26,26 +26,26 @@ define( function( require ) {
     }
     this.start = usesVectors ? x0 : new Vector2( x0, y0 );
     this.end = usesVectors ? y0 : new Vector2( x1, y1 );
-    
+
     // use the global scratch canvas instead of creating a new Canvas
     Gradient.call( this, scenery.scratchContext.createLinearGradient( x0, y0, x1, y1 ) );
   };
   var LinearGradient = scenery.LinearGradient;
-  
+
   inherit( Gradient, LinearGradient, {
-    
+
     isLinearGradient: true,
-    
+
     // seems we need the defs: http://stackoverflow.com/questions/7614209/linear-gradients-in-svg-without-defs
     // SVG: spreadMethod 'pad' 'reflect' 'repeat' - find Canvas usage
     getSVGDefinition: function( id ) {
       /* Approximate example of what we are creating:
-      <linearGradient id="grad2" x1="0" y1="0" x2="100" y2="0" gradientUnits="userSpaceOnUse">
-        <stop offset="0" style="stop-color:rgb(255,255,0);stop-opacity:1" />
-        <stop offset="0.5" style="stop-color:rgba(255,255,0,0);stop-opacity:0" />
-        <stop offset="1" style="stop-color:rgb(255,0,0);stop-opacity:1" />
-      </linearGradient>
-      */
+       <linearGradient id="grad2" x1="0" y1="0" x2="100" y2="0" gradientUnits="userSpaceOnUse">
+       <stop offset="0" style="stop-color:rgb(255,255,0);stop-opacity:1" />
+       <stop offset="0.5" style="stop-color:rgba(255,255,0,0);stop-opacity:0" />
+       <stop offset="1" style="stop-color:rgb(255,0,0);stop-opacity:1" />
+       </linearGradient>
+       */
       var definition = document.createElementNS( scenery.svgns, 'linearGradient' );
       definition.setAttribute( 'id', id );
       definition.setAttribute( 'gradientUnits', 'userSpaceOnUse' ); // so we don't depend on the bounds of the object being drawn with the gradient
@@ -56,27 +56,27 @@ define( function( require ) {
       if ( this.transformMatrix ) {
         definition.setAttribute( 'gradientTransform', this.transformMatrix.getSVGTransform() );
       }
-      
+
       _.each( this.stops, function( stop ) {
         var stopElement = document.createElementNS( scenery.svgns, 'stop' );
         stopElement.setAttribute( 'offset', stop.ratio );
         stopElement.setAttribute( 'style', 'stop-color: ' + stop.color.withAlpha( 1 ).toCSS() + '; stop-opacity: ' + stop.color.a.toFixed( 20 ) + ';' );
         definition.appendChild( stopElement );
       } );
-      
+
       return definition;
     },
-    
+
     toString: function() {
       var result = 'new scenery.LinearGradient( ' + this.start.x + ', ' + this.start.y + ', ' + this.end.x + ', ' + this.end.y + ' )';
-      
+
       _.each( this.stops, function( stop ) {
         result += '.addColorStop( ' + stop.ratio + ', \'' + stop.color.toString() + '\' )';
       } );
-      
+
       return result;
     }
   } );
-  
+
   return LinearGradient;
 } );
