@@ -73,7 +73,7 @@ define( function( require ) {
 
     invalidateSupportedRenderers: function() {
       if ( this._image instanceof HTMLCanvasElement ) {
-        this.setRendererBitmask( scenery.bitmaskSupportsCanvas );
+        this.setRendererBitmask( scenery.bitmaskSupportsCanvas | scenery.bitmaskSupportsPixi );
       }
       else {
         // assumes HTMLImageElement
@@ -143,6 +143,26 @@ define( function( require ) {
 
     paintWebGL: function( state ) {
       throw new Error( 'paintWebGL:nimplemented' );
+    },
+
+    /*---------------------------------------------------------------------------*
+    * Pixi support
+    *----------------------------------------------------------------------------*/
+    createPixiTexture: function() {
+      if ( this._image instanceof HTMLCanvasElement ) {
+        return PIXI.Texture.fromCanvas( this._image );
+      } else {
+        return PIXI.Texture.fromImage( this._image.src );
+      }
+    },
+
+    createPixiDisplayObject: function() {
+      // create a new Sprite using the texture
+      return new PIXI.Sprite( this.createPixiTexture() );
+    },
+
+    updatePixiDisplayObject: function( sprite ) {
+      sprite.texture = this.createPixiTexture();
     },
 
     /*---------------------------------------------------------------------------*

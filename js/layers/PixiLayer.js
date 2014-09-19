@@ -26,6 +26,7 @@ define( function( require ) {
     Layer.call( this, args );
     this.width = this.scene.sceneBounds.width;
     this.height = this.scene.sceneBounds.height;
+    this.scene = args.scene;
     sceneryLayerLog && sceneryLayerLog( 'PixiLayer #' + this.id + ' constructor' );
 
     // create an new instance of a pixi stage
@@ -48,7 +49,7 @@ define( function( require ) {
     this.bunny.position.x = 200;
     this.bunny.position.y = 150;
 
-    this.pixiStage.addChild( this.bunny );
+    // this.pixiStage.addChild( this.bunny );
 
     var domElement = this.pixiRenderer.view;
     this.domElement = domElement;
@@ -62,6 +63,8 @@ define( function( require ) {
     this.$main.append( domElement );
 
     this.isPixiLayer = true;
+
+    this.displayObjectContainerMap = {};
   };
   var PixiLayer = scenery.PixiLayer;
 
@@ -72,7 +75,7 @@ define( function( require ) {
   inherit( Layer, PixiLayer, {
 
     addInstance: function( instance ) {
-
+      this.pixiStage.addChild( instance.node.createPixiDisplayObject() );
     },
 
     removeInstance: function( instance ) {
@@ -91,6 +94,8 @@ define( function( require ) {
       Layer.prototype.dispose.call( this );
 
       this.domElement.parentNode.removeChild( this.domElement );
+
+      this.pixiRenderer.destroy && this.pixiRenderer.destroy();
     },
 
     // TODO: consider a stack-based model for transforms?
