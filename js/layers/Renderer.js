@@ -16,6 +16,7 @@ define( function( require ) {
   require( 'SCENERY/layers/CanvasLayer' );
   require( 'SCENERY/layers/DOMLayer' );
   require( 'SCENERY/layers/SVGLayer' );
+  require( 'SCENERY/layers/PixiLayer' );
 
   scenery.Renderer = function Renderer( layerConstructor, name, bitmask, defaultOptions ) {
     this.layerConstructor = layerConstructor;
@@ -38,6 +39,7 @@ define( function( require ) {
   Renderer.Canvas = new Renderer( scenery.CanvasLayer, 'canvas', scenery.bitmaskSupportsCanvas, {} );
   Renderer.DOM = new Renderer( scenery.DOMLayer, 'dom', scenery.bitmaskSupportsDOM, {} );
   Renderer.SVG = new Renderer( scenery.SVGLayer, 'svg', scenery.bitmaskSupportsSVG, {} );
+  Renderer.Pixi = new Renderer( scenery.PixiLayer, 'pixi', scenery.bitmaskSupportsPixi, {} );
 
   // add shortcuts for the default layer types
   scenery.CanvasDefaultLayerType = Renderer.Canvas.defaultLayerType;
@@ -49,6 +51,7 @@ define( function( require ) {
   Renderer.dom = Renderer.DOM;
   Renderer.svg = Renderer.SVG;
   Renderer.webgl = Renderer.WebGL;
+  Renderer.pixi = Renderer.Pixi;
 
   return Renderer;
 } );
