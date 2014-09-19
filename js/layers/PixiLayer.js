@@ -36,21 +36,6 @@ define( function( require ) {
     this.pixiRoot = new PIXI.DisplayObjectContainer();
     this.pixiStage.addChild( this.pixiRoot );
 
-    // create a texture from an image path
-    var texture = PIXI.Texture.fromImage( 'images/skater-left.png' );
-    // create a new Sprite using the texture
-    this.bunny = new PIXI.Sprite( texture );
-
-    // center the sprites anchor point
-    this.bunny.anchor.x = 0.5;
-    this.bunny.anchor.y = 0.5;
-
-    // move the sprite t the center of the screen
-    this.bunny.position.x = 200;
-    this.bunny.position.y = 150;
-
-    // this.pixiStage.addChild( this.bunny );
-
     var domElement = this.pixiRenderer.view;
     this.domElement = domElement;
     domElement.style.width = this.width + 'px';
@@ -65,6 +50,8 @@ define( function( require ) {
     this.isPixiLayer = true;
 
     this.displayObjectContainerMap = {};
+
+    this.nodes = [];
   };
   var PixiLayer = scenery.PixiLayer;
 
@@ -75,7 +62,9 @@ define( function( require ) {
   inherit( Layer, PixiLayer, {
 
     addInstance: function( instance ) {
-      this.pixiStage.addChild( instance.node.createPixiDisplayObject() );
+      var node = instance.node.createPixiDisplayObject();
+      this.nodes.push( node );
+      this.pixiStage.addChild( node );
     },
 
     removeInstance: function( instance ) {
@@ -83,8 +72,20 @@ define( function( require ) {
     },
 
     render: function( scene, args ) {
-      // just for fun, lets rotate mr rabbit a little
-      this.bunny.rotation += 0.1;
+
+      for ( var i = 0; i < this.nodes.length; i++ ) {
+        var o = this.nodes[i];
+        if ( window.skaterData ) {
+          var skaterNode = window.skaterData.skaterNode;
+
+          var m = skaterNode.getLocalToGlobalMatrix();
+
+          o.position.x = m.getTranslation().x;
+          o.position.y = m.getTranslation().y;
+          o.rotation = window.skaterData.angle;
+          o.scale.set( m.getScaleVector().x );
+        }
+      }
 
       // render the stage
       this.pixiRenderer.render( this.pixiStage );
