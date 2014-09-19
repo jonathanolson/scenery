@@ -166,10 +166,6 @@ define( function( require ) {
       // nothing at all needed here
     },
 
-    getContainer: function() {
-      return this.div;
-    },
-
     // returns next zIndex in place. allows layers to take up more than one single zIndex
     reindex: function( zIndex ) {
       Layer.prototype.reindex.call( this, zIndex );
