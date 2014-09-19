@@ -67,8 +67,9 @@ define( function( require ) {
     bitmaskSupportsCanvas: 0x0000001,
     bitmaskSupportsSVG: 0x0000002,
     bitmaskSupportsDOM: 0x0000004,
-    bitmaskSupportsPixi: 0x0000008,
-    // 10, 20, 40, 80 reserved for future renderers
+    bitmaskSupportsWebGL: 0x0000008,
+    bitmaskSupportsPixi: 0x0000010,
+    // 20, 40, 80 reserved for future renderers
     bitmaskNotPainted: 0x0000100
     // TODO: what else would we need?
   };
