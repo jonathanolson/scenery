@@ -77,13 +77,16 @@ define( function( require ) {
       for ( var i = 0; i < this.displayObjects.length; i++ ) {
         var displayObject = this.displayObjects[i];
 
+        //TODO: This should be done lazily, not eagerly (to save time)
+        displayObject.sceneryInstance.node.updatePixiDisplayObject( displayObject );
+
         //TODO: we should really listen for if/when these change
         //TODO: or at least reuse the same matrix for getLocalToGlobalMatrix internal computation
         var m = displayObject.sceneryInstance.node.getLocalToGlobalMatrix();
 
         displayObject.position.x = m.getTranslation().x;
         displayObject.position.y = m.getTranslation().y;
-        displayObject.rotation = window.skaterData.angle;
+        displayObject.rotation = m.getRotation();
         displayObject.scale.set( m.getScaleVector().x );
       }
 

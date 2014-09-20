@@ -40,11 +40,12 @@ define( function( require ) {
   inherit( Node, Path, {
     // allow more specific path types (Rectangle, Line) to override what restrictions we have
     getPathRendererBitmask: function() {
-      return scenery.bitmaskSupportsCanvas | scenery.bitmaskSupportsSVG;
+      return scenery.bitmaskSupportsCanvas | scenery.bitmaskSupportsSVG | scenery.bitmaskSupportsPixi;
     },
 
     invalidateSupportedRenderers: function() {
-      this.setRendererBitmask( this.getFillRendererBitmask() & this.getStrokeRendererBitmask() & this.getPathRendererBitmask() );
+      var bitmask = this.getFillRendererBitmask() & this.getStrokeRendererBitmask() & this.getPathRendererBitmask();
+      this.setRendererBitmask( bitmask );
     },
 
     // sets the shape drawn, or null to remove the shape

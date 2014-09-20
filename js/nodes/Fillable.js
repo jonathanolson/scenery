@@ -200,6 +200,8 @@ define( function( require ) {
         bitmask |= scenery.bitmaskSupportsDOM;
       }
 
+      bitmask |= scenery.bitmaskSupportsPixi;
+
       return bitmask;
     };
 

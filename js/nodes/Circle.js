@@ -45,6 +45,8 @@ define( function( require ) {
       if ( this.hasStroke() && !this.getStroke().isGradient && !this.getStroke().isPattern && this.getLineWidth() <= this.getRadius() ) {
         bitmask |= scenery.bitmaskSupportsDOM;
       }
+
+      bitmask |= scenery.bitmaskSupportsPixi;
       return bitmask;
     },
 

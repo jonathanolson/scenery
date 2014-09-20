@@ -106,6 +106,8 @@ define( function( require ) {
           bitmask |= scenery.bitmaskSupportsDOM;
         }
       }
+
+      bitmask |= scenery.bitmaskSupportsPixi;
       return bitmask;
     },
 
@@ -122,6 +124,8 @@ define( function( require ) {
            this._rectArcHeight <= maximumArcSize && this._rectArcWidth <= maximumArcSize ) {
         bitmask |= scenery.bitmaskSupportsDOM;
       }
+
+      bitmask |= scenery.bitmaskSupportsPixi;
 
       return bitmask;
     },
@@ -324,6 +328,47 @@ define( function( require ) {
       }
 
       rect.setAttribute( 'style', this.getSVGFillStyle() + this.getSVGStrokeStyle() );
+    },
+
+    /*---------------------------------------------------------------------------*
+     * Pixi support
+     *----------------------------------------------------------------------------*/
+
+    createPixiDisplayObject: function() {
+
+      var graphics = new PIXI.Graphics();
+
+      if ( this._rectWidth * this._rectHeight <= 0 ) {
+        return graphics;
+      }
+// begin a green fill..
+      this.drawPixi( graphics );
+
+// end the fill
+
+      return graphics;
+    },
+
+    drawPixi: function( graphics ) {
+      graphics.beginFill( 0x00FF00 );
+      if ( this.isRounded() ) {
+
+        graphics.drawRoundedRect( this._rectX, this._rectY, this._rectWidth, this._rectHeight, 2 );
+      }
+      else {
+        graphics.drawRect( this._rectX, this._rectY, this._rectWidth, this._rectHeight );
+      }
+      graphics.endFill();
+    },
+
+    updatePixiDisplayObject: function( graphics ) {
+      graphics.clear();
+
+      if ( this._rectWidth * this._rectHeight <= 1 ) {
+        return graphics;
+      }
+
+      this.drawPixi( graphics );
     },
 
     /*---------------------------------------------------------------------------*
