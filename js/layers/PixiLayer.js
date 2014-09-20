@@ -51,7 +51,7 @@ define( function( require ) {
 
     this.displayObjectContainerMap = {};
 
-    this.nodes = [];
+    this.displayObjects = [];
   };
   var PixiLayer = scenery.PixiLayer;
 
@@ -62,9 +62,10 @@ define( function( require ) {
   inherit( Layer, PixiLayer, {
 
     addInstance: function( instance ) {
-      var node = instance.node.createPixiDisplayObject();
-      this.nodes.push( node );
-      this.pixiStage.addChild( node );
+      var displayObject = instance.node.createPixiDisplayObject();
+      displayObject.sceneryInstance = instance;
+      this.displayObjects.push( displayObject );
+      this.pixiStage.addChild( displayObject );
     },
 
     removeInstance: function( instance ) {
@@ -73,18 +74,17 @@ define( function( require ) {
 
     render: function( scene, args ) {
 
-      for ( var i = 0; i < this.nodes.length; i++ ) {
-        var o = this.nodes[i];
-        if ( window.skaterData ) {
-          var skaterNode = window.skaterData.skaterNode;
+      for ( var i = 0; i < this.displayObjects.length; i++ ) {
+        var displayObject = this.displayObjects[i];
 
-          var m = skaterNode.getLocalToGlobalMatrix();
+        //TODO: we should really listen for if/when these change
+        //TODO: or at least reuse the same matrix for getLocalToGlobalMatrix internal computation
+        var m = displayObject.sceneryInstance.node.getLocalToGlobalMatrix();
 
-          o.position.x = m.getTranslation().x;
-          o.position.y = m.getTranslation().y;
-          o.rotation = window.skaterData.angle;
-          o.scale.set( m.getScaleVector().x );
-        }
+        displayObject.position.x = m.getTranslation().x;
+        displayObject.position.y = m.getTranslation().y;
+        displayObject.rotation = window.skaterData.angle;
+        displayObject.scale.set( m.getScaleVector().x );
       }
 
       // render the stage
