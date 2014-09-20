@@ -123,6 +123,32 @@ define( function( require ) {
       }
     },
 
+    createPixiDisplayObject: function() {
+      return new PIXI.Graphics();
+    },
+
+    updatePixiDisplayObject: function( graphics ) {
+
+      graphics.clear();
+      if ( this.hasShape() ) {
+        // TODO: fill/stroke delay optimizations?
+//        context.beginPath();
+        graphics.lineStyle( 5, 0xFF0000 );
+        this._shape.writeToPixi( graphics );
+
+//        if ( this._fill ) {
+//          this.beforeCanvasFill( wrapper ); // defined in Fillable
+//          context.fill();
+//          this.afterCanvasFill( wrapper ); // defined in Fillable
+//        }
+//        if ( this._stroke ) {
+//          this.beforeCanvasStroke( wrapper ); // defined in Strokable
+//          context.stroke();
+//          this.afterCanvasStroke( wrapper ); // defined in Strokable
+//        }
+      }
+    },
+
     paintWebGL: function( state ) {
       throw new Error( 'Path.prototype.paintWebGL unimplemented' );
     },
