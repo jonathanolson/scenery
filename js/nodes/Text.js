@@ -152,6 +152,8 @@ define( function( require ) {
       // fill and stroke will determine whether we have DOM text support
       bitmask |= scenery.bitmaskSupportsDOM;
 
+      bitmask |= scenery.bitmaskSupportsPixi;
+
       return bitmask;
     },
 
@@ -220,6 +222,13 @@ define( function( require ) {
       }
     },
 
+    createPixiDisplayObject: function() {
+      var text = new PIXI.Text( this._text, {font: "50px Arial", fill: "red"} );
+      return text;
+    },
+    updatePixiDisplayObject: function() {
+
+    },
     /*---------------------------------------------------------------------------*
      * WebGL support
      *----------------------------------------------------------------------------*/

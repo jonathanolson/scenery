@@ -18,7 +18,7 @@ define( function( require ) {
   var Bounds2 = require( 'DOT/Bounds2' );
   var Matrix3 = require( 'DOT/Matrix3' );
   var Features = require( 'SCENERY/util/Features' );
-
+  var Color = require( 'SCENERY/util/Color' );
   /**
    * Currently, all numerical parameters should be finite.
    * x:         x-position of the upper-left corner (left bound)
@@ -335,30 +335,7 @@ define( function( require ) {
      *----------------------------------------------------------------------------*/
 
     createPixiDisplayObject: function() {
-
-      var graphics = new PIXI.Graphics();
-
-      if ( this._rectWidth * this._rectHeight <= 0 ) {
-        return graphics;
-      }
-// begin a green fill..
-      this.drawPixi( graphics );
-
-// end the fill
-
-      return graphics;
-    },
-
-    drawPixi: function( graphics ) {
-      graphics.beginFill( 0x00FF00 );
-      if ( this.isRounded() ) {
-
-        graphics.drawRoundedRect( this._rectX, this._rectY, this._rectWidth, this._rectHeight, 2 );
-      }
-      else {
-        graphics.drawRect( this._rectX, this._rectY, this._rectWidth, this._rectHeight );
-      }
-      graphics.endFill();
+      return new PIXI.Graphics();
     },
 
     updatePixiDisplayObject: function( graphics ) {
@@ -367,8 +344,16 @@ define( function( require ) {
       if ( this._rectWidth * this._rectHeight <= 1 ) {
         return graphics;
       }
+      var c = new Color( this.fill );
+      graphics.beginFill( PIXI.rgb2hex( [c.red, c.green, c.blue] ) );
+      if ( this.isRounded() ) {
 
-      this.drawPixi( graphics );
+        graphics.drawRoundedRect( this._rectX, this._rectY, this._rectWidth, this._rectHeight, 2 );
+      }
+      else {
+        graphics.drawRect( this._rectX, this._rectY, this._rectWidth, this._rectHeight );
+      }
+      graphics.endFill();
     },
 
     /*---------------------------------------------------------------------------*

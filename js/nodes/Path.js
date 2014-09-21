@@ -134,7 +134,9 @@ define( function( require ) {
         // TODO: fill/stroke delay optimizations?
 //        context.beginPath();
         graphics.lineStyle( 5, 0xFF0000 );
-        this._shape.writeToPixi( graphics );
+        if ( this._shape ) {
+          this._shape.writeToPixi( graphics );
+        }
 
 //        if ( this._fill ) {
 //          this.beforeCanvasFill( wrapper ); // defined in Fillable

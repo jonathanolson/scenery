@@ -116,6 +116,7 @@ define( function( require ) {
     this._childBounds = Bounds2.NOTHING; // just for children, in "local" coordinates
     this._localBounds = null; // just used for an override currently, will be replaced in Scenery ohtwo
     this._boundsDirty = true;
+    this.pixiDirty = false;
     this._selfBoundsDirty = this.isPainted();
     this._childBoundsDirty = true;
 
